@@ -32,7 +32,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
 
       // Appel à ton API backend pour enregistrer l'utilisateur
       final response = await http.post(
-        Uri.parse('https://ton-api-url.com/users/register'), // Change l'URL avec ton backend
+        Uri.parse('http://10.0.2.2:3000/users/'), // Change l'URL avec ton backend
         headers: {
           'Content-Type': 'application/json',
         },

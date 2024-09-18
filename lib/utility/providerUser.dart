@@ -1,1 +1,18 @@
-// TODO Implement this library.
+import 'package:flutter/material.dart';
+
+class UserProvider with ChangeNotifier {
+  User? _user;
+
+  User? get user => _user;
+
+  void setUser(User user) {
+    _user = user;
+    notifyListeners();
+  }
+}
+
+class User {
+  final String token;
+
+  User(this.token);
+}

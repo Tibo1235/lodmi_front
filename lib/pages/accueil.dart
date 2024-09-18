@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
-import '/pages/account_page.dart';
-import 'package:provider/provider.dart';  // Utilisé pour gérer l'état utilisateur
+import 'package:lodmi_front/pages/research_page.dart';
+import 'package:provider/provider.dart';
+import '../models/user_model.dart';
+import 'account_page.dart';
+import 'fiche_creation.dart';
+import '../providers/user_provider.dart'; // Assurez-vous que le chemin est correct
+import './research_page.dart';
+import './account_page.dart';
+import './fiche_creation.dart'; // Assurez-vous que le chemin est correct
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,7 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  // Appelle setState pour mettre à jour l'index de la page courante
   void setCurrentIndex(int index) {
     setState(() {
       _currentIndex = index;
@@ -19,22 +25,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Accède à l'utilisateur à partir du Provider (ou autre méthode de gestion d'état)
-    final user = Provider.of<UserModel>(context);  // Exemple avec Provider
-    final isAdmin = user.isAdmin;
-    final isBotaniste = user.isBotaniste;
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
+    //final isAdmin = user?.isAdmin ?? false;
+    //final isBotaniste = user?.isBotaniste ?? false;
 
     return Scaffold(
-      appBar: AppBar(
-        title: [
-          Text("Bienvenue"),
-          Text("Créer une annonce"),
-          if (isAdmin || isBotaniste) Text("Liste fiches"),
-          Text("Détails du compte"),
-        ][_currentIndex],
-      ),
       body: [
-        AccountPage(),  // Widget de gestion du compte
+        SearchPage(),
+        AccountPage(),
+        CreateFichePage(),
       ][_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -50,12 +50,12 @@ class _HomePageState extends State<HomePage> {
             label: 'Garde',
             backgroundColor: Colors.green,
           ),
-          if (isAdmin || isBotaniste)
+          /*if (isAdmin || isBotaniste)
             BottomNavigationBarItem(
               icon: Icon(Icons.create),
               label: 'Fiches',
               backgroundColor: Colors.green,
-            ),
+            ),*/
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Compte',
@@ -65,16 +65,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class UserModel {
-  final String username;
-  final bool isAdmin;
-  final bool isBotaniste;
-
-  UserModel({
-    required this.username,
-    this.isAdmin = false,
-    this.isBotaniste = false,
-  });
 }
